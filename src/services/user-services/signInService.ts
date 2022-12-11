@@ -9,8 +9,6 @@ type SignInResult = {
     token: string;
   };
 
-type GetUserOrFailResult = Pick<User, "id" | "email" | "password">;
-
 async function signIn(data: AuthData): Promise<SignInResult> {
     const { email, password } = data;
   
@@ -20,11 +18,11 @@ async function signIn(data: AuthData): Promise<SignInResult> {
   
     const token = await generateToken(user.id);
   
-    return {token: token};
+    return {token};
     
   }
 
-  async function getUserOrFail(email: string): Promise<GetUserOrFailResult> {
+  async function getUserOrFail(email: string): Promise<User> {
     const user = await userRepository.findByEmail(email);
     if (!user) throw invalidCredentialsError();
   

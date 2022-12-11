@@ -12,12 +12,13 @@ export async function validateToken(
   res: Response,
   next: NextFunction
 ) {
-  const authorization = req.headers["authorization"];
+  console.log("Aqui")
+  const authorization =  req.header("Authorization");
   if (!authorization) throw invalidCredentialsError();
-
+  console.log("Aqui 2")
   const token = authorization.replace("Bearer ", "");
   if (!token) throw invalidCredentialsError();
-
+  console.log("Aqui 3")
   try {
     const { userId } = jwt.verify(token, process.env.JWT_SECRET) as {
       userId: number;
@@ -25,10 +26,11 @@ export async function validateToken(
     const user = await getUserbyID(userId);
     res.locals.user = user;
 
-    next();
-  } catch {
-    throw invalidCredentialsError();
+   
+  } catch (error) {
+    res.sendStatus(422)
   }
+  next();
 }
 
 

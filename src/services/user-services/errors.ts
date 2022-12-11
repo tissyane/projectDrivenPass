@@ -16,3 +16,16 @@ export function invalidCredentialsError(): ApplicationError {
   };
 }
 
+export function conflictError(): ApplicationError {
+  return {
+    name: "ConflictError",
+    message: "data already registered",
+  };
+}
+
+export function notFoundError(): ApplicationError {
+  return {
+    name: "NotFoundError",
+    message: "No result for this search!",
+  };
+}
