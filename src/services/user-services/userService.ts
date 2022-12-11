@@ -1,11 +1,11 @@
 import { User } from "@prisma/client";
-import { AuthData } from "../protocols/protocols";
-import userRepository from "../repositories/userRepository";
 import { duplicatedEmailError } from "./errors";
 import bcrypt from "bcrypt";
+import { AuthData } from "../../protocols/protocols";
+import userRepository from "../../repositories/userRepository";
 
 
-export async function createUser(data: AuthData): Promise<User> {
+async function createUser(data: AuthData): Promise<User> {
   
  await validateUniqueEmailOrFail(data.email);
 

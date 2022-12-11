@@ -1,5 +1,5 @@
 
-import { ApplicationError } from "../protocols/protocols";
+import { ApplicationError } from "../../protocols/protocols";
 
 export function duplicatedEmailError(): ApplicationError {
   return {

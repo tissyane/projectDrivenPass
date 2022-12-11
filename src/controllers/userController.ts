@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
+import userService from "../services/user-services/userService";
 import httpStatus from "http-status";
-import userService from "../services/userService";
 
 export async function signUp(req: Request, res: Response) {
  
