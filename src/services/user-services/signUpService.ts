@@ -22,8 +22,8 @@ async function validateUniqueEmailOrFail(email: string) {
   }
 }
 
-const userService = {
+const signUpService = {
   createUser,
 };
 
-export default userService;
+export default signUpService;

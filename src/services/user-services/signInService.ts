@@ -1,10 +1,9 @@
 import { AuthData } from "@/protocols/protocols";
-import { exclude } from "@/utils/prisma-utils";
 import { User } from "@prisma/client";
-import { invalidCredentialsError } from "./errors";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import userRepository from "../../repositories/userRepository";
+import { invalidCredentialsError } from "./errors";
 
 type SignInResult = {
     token: string;
@@ -52,8 +51,8 @@ async function signIn(data: AuthData): Promise<SignInResult> {
 
 
 
-  const authService = {
+  const signInService = {
     signIn,
   };
   
-  export default authService;
+  export default signInService;
