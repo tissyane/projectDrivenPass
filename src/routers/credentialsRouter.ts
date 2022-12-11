@@ -18,4 +18,8 @@ credentialsRouter.get(
   credentialsController.getAllCredentials
 );
 
+credentialsRouter.get(
+  '/credentials/:id',
+  credentialsController.getCredentialById
+);
 export default credentialsRouter;

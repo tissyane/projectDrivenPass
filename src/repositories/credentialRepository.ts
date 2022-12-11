@@ -14,7 +14,7 @@ export async function createCredential(
     });
   }
   
-  export async function getTitleByUserId(userId: number, title: string) {
+  export async function getTitleByUserId (userId: number, title: string) {
     return prisma.credential.findFirst({
       where: {
         userId,
@@ -22,8 +22,22 @@ export async function createCredential(
       }
     });
   }
+
+
   
-  export const getAll = async (userId: number) => {
+  export async function getAll (userId: number)  {
     return prisma.credential.findMany({ where: { userId } });
   };
  
+  export async function getCredentialById(userId: number, id: number) {
+    return prisma.credential.findFirst({
+      where: {
+        userId,
+        id
+      }
+    });
+  }
+
+  export async function getById(id: number) {
+    return prisma.credential.findUnique({ where: { id } });
+  }

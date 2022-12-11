@@ -29,3 +29,10 @@ export function notFoundError(): ApplicationError {
     message: "No result for this search!",
   };
 }
+
+export function unauthorizedAccess(): ApplicationError {
+  return {
+    name: "UnauthorizedAccess",
+    message: "You only have access to your credentials",
+  };
+}

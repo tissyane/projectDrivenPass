@@ -34,11 +34,9 @@ export async function validateToken(
 }
 
 
-async function getUserbyID(id: number): Promise<GetUserOrFailResult> {
+async function getUserbyID(id: number): Promise<User> {
   const user = await userRepository.findById(id);
   if (!user) throw invalidCredentialsError();
 
   return user;
 }
-
-type GetUserOrFailResult = Pick<User, "id" | "email" | "password">;

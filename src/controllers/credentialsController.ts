@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { CredentialData } from '@/protocols/protocols';
-import * as credentialService from '../services/credential-services/credentialsService';
 import httpStatus from 'http-status';
+import credentialService from '../services/credential-services/credentialsService';
 
 
 export async function createCredential(req: Request, res: Response) {
@@ -29,7 +29,6 @@ export async function getAllCredentials(req: Request, res: Response) {
 
   try {
     const credentialsList = await credentialService.getAllCredentials(userId);
-  
     res.status(200).send(credentialsList);
   } catch (error) {
     if (error.name === "NotFoundError") {
@@ -37,6 +36,23 @@ export async function getAllCredentials(req: Request, res: Response) {
     }
     return res.status(httpStatus.BAD_REQUEST).send(error);
   }
- 
+}
+
+export async function getCredentialById(req: Request, res: Response) {
+  const id = Number(req.params.id);
+  //const { userId } = res.locals;
+  const userId  = 4;
+  try {
+    const credential= await credentialService.getCredentialById(userId, id);
+  res.status(200).send(credential);
+  } catch (error) {
+    if (error.name === "NotFoundError") {
+      return res.status(httpStatus.NOT_FOUND).send(error);
+    }
+    if (error.name === "UnauthorizedAccess") {
+      return res.status(httpStatus.UNAUTHORIZED).send(error);
+    }
+    return res.status(httpStatus.BAD_REQUEST).send(error);
+  }
 }
 

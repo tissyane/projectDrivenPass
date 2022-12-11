@@ -1,9 +1,9 @@
 import { CredentialData } from "@/protocols/protocols";
 import * as encryptUtils from "../../utils/encrypt";
-import { duplicatedTitleError, notFoundError } from "../../utils/errors";
+import { duplicatedTitleError, notFoundError, unauthorizedAccess } from "../../utils/errors";
 import * as credentialRepository from '../../repositories/credentialRepository';
 
-export async function createCredential(
+async function createCredential(
     userId: number,
     credentialData: CredentialData
   ) {
@@ -16,7 +16,7 @@ export async function createCredential(
 return credential
   }
 
-  async function validateTitle(userId: number, title: string) {
+async function validateTitle(userId: number, title: string) {
     const titleExists = await credentialRepository.getTitleByUserId(
       userId,
       title
@@ -26,23 +26,41 @@ return credential
     }
   }
 
-  export const getAllCredentials = async (userId: number) => {
+
+async function getAllCredentials (userId: number) {
     const credentials = await credentialRepository.getAll(userId);
     if (credentials.length === 0) {
       throw notFoundError();
     }
     const credentialsWithDecryptedPassword = credentials.map((credential) => {
       const { password } = credential;
-            const decryptedPassword = encryptUtils.decryptData(password);
+      const decryptedPassword = encryptUtils.decryptData(password);
       return { ...credential, password: decryptedPassword };
     });
     return credentialsWithDecryptedPassword;
   };
+
+
+async function getCredentialById(userId: number, id: number) {
   
+    const credential = await credentialRepository.getById(id);
+    
+    if (!credential) {
+      throw notFoundError();
+    }
+    if (credential.userId !== userId) {
+      throw unauthorizedAccess();
+    }
+    const { password } = credential;
+	const decryptedPassword =  encryptUtils.decryptData(password);
+	return { ...credential, password: decryptedPassword };
+  }
 
   const credentialService = {
     createCredential, 
-    getAllCredentials
+    getAllCredentials,
+    getCredentialById
+
   };
   
   export default credentialService;
