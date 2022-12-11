@@ -15,3 +15,6 @@ export async function createNetwork(
   };
 
 
+  export async function getAll (userId: number)  {
+    return prisma.network.findMany({ where: { userId } });
+  };

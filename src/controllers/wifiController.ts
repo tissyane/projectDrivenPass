@@ -21,3 +21,18 @@ export async function createWifi(req: Request, res: Response) {
   }
 }
 
+export async function getAllWifi(req: Request, res: Response) {
+  const { id: userId } = res.locals.user;
+
+  try {
+    const wifiList = await wifiService.getAllWifi(userId);
+    res.status(httpStatus.OK).send(wifiList);
+  } catch (error) {
+    if (error.name === "NotFoundError") {
+      return res.status(httpStatus.NOT_FOUND).send(error);
+    }
+    return res.status(httpStatus.BAD_REQUEST).send(error);
+  }
+}
+
+

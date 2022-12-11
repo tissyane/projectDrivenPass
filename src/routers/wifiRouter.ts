@@ -13,4 +13,8 @@ wifiRouter.post(
   wifiController.createWifi
 );
 
+wifiRouter.get(
+  '/network',
+  wifiController.getAllWifi
+);
 export default wifiRouter;
