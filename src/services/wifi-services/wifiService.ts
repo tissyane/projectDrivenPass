@@ -40,11 +40,16 @@ async function getwifiById(userId: number, id: number) {
 const decryptedPassword =  encryptUtils.decryptData(password);
 return { ...wifi, password: decryptedPassword };
 }
+
+export async function deleteWifi(id: number) {
+  await wifiRepository.deleteWifi(id);
+}
   
 const wifiService = {
   createWifi,
   getAllWifi,
-  getwifiById
+  getwifiById,
+  deleteWifi
 };
 
 export default wifiService;

@@ -23,4 +23,9 @@ wifiRouter.get(
   wifiController.getWifiById
 );
 
+wifiRouter.delete(
+  '/network/:id',
+  wifiController.deleteWifi
+);
+
 export default wifiRouter;

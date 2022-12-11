@@ -22,3 +22,7 @@ export async function createNetwork(
   export async function getById(id: number) {
     return prisma.network.findUnique({ where: { id } });
   };
+
+  export async function deleteWifi(id: number) {
+    return prisma.network.delete({ where: { id } });
+  };
