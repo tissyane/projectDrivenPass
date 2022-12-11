@@ -36,3 +36,10 @@ export function unauthorizedAccess(): ApplicationError {
     message: "You only have access to your credentials",
   };
 }
+
+export function noTokenAccess(): ApplicationError {
+  return {
+    name: "UnauthorizedAccess",
+    message: "You must have a token",
+  };
+}

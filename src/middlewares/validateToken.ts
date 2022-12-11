@@ -4,6 +4,7 @@ import { User } from "@prisma/client";
 import dotenv from "dotenv";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import httpStatus from "http-status";
 
 dotenv.config();
 
@@ -12,25 +13,27 @@ export async function validateToken(
   res: Response,
   next: NextFunction
 ) {
-  console.log("Aqui")
+  
   const authorization =  req.header("Authorization");
-  if (!authorization) throw invalidCredentialsError();
-  console.log("Aqui 2")
+  if (!authorization) return generateUnauthorizedResponse(res);
+
+  
   const token = authorization.replace("Bearer ", "");
-  if (!token) throw invalidCredentialsError();
-  console.log("Aqui 3")
+  if (!token) return generateUnauthorizedResponse(res);
+
+ 
   try {
     const { userId } = jwt.verify(token, process.env.JWT_SECRET) as {
       userId: number;
     };
     const user = await getUserbyID(userId);
     res.locals.user = user;
-
+    next();
    
   } catch (error) {
-    res.sendStatus(422)
+    res.sendStatus(httpStatus.UNAUTHORIZED)
   }
-  next();
+  
 }
 
 
@@ -39,4 +42,8 @@ async function getUserbyID(id: number): Promise<User> {
   if (!user) throw invalidCredentialsError();
 
   return user;
+}
+
+function generateUnauthorizedResponse(res: Response) {
+  res.status(httpStatus.UNAUTHORIZED).send(invalidCredentialsError());
 }

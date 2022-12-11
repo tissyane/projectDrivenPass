@@ -6,15 +6,16 @@ import * as credentialsController from '../controllers/credentialsController';
 
 const credentialsRouter = Router();
 
-//credentialsRouter.use(validateToken);
+credentialsRouter.use(validateToken);
+
 credentialsRouter.post(
-  '/credentials/',
+  '/credentials',
   validateSchema(credentialSchema),
   credentialsController.createCredential
 );
 
 credentialsRouter.get(
-  '/credentials/',
+  '/credentials',
   credentialsController.getAllCredentials
 );
 

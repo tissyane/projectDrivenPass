@@ -5,9 +5,8 @@ import credentialService from "../services/credential-services/credentialsServic
 
 export async function createCredential(req: Request, res: Response) {
   const credentialData: CredentialData = req.body;
-  //const { userId } = res.locals;
-  const userId = 4;
-
+  const { id: userId } = res.locals.user;
+  
   try {
     const credential = await credentialService.createCredential(
       userId,
@@ -25,12 +24,11 @@ export async function createCredential(req: Request, res: Response) {
 }
 
 export async function getAllCredentials(req: Request, res: Response) {
-  //const { userId } = res.locals;
-  const userId = 4;
+  const { id: userId } = res.locals.user;
 
   try {
     const credentialsList = await credentialService.getAllCredentials(userId);
-    res.status(200).send(credentialsList);
+    res.status(httpStatus.OK).send(credentialsList);
   } catch (error) {
     if (error.name === "NotFoundError") {
       return res.status(httpStatus.NOT_FOUND).send(error);
@@ -41,11 +39,11 @@ export async function getAllCredentials(req: Request, res: Response) {
 
 export async function getCredentialById(req: Request, res: Response) {
   const id = Number(req.params.id);
-  //const { userId } = res.locals;
-  const userId = 4;
+   const { id: userId } = res.locals.user;
+
   try {
     const credential = await credentialService.getCredentialById(userId, id);
-    res.status(200).send(credential);
+    res.status(httpStatus.OK).send(credential);
   } catch (error) {
     if (error.name === "NotFoundError") {
       return res.status(httpStatus.NOT_FOUND).send(error);
@@ -59,13 +57,12 @@ export async function getCredentialById(req: Request, res: Response) {
 
 export async function deleteCredential(req: Request, res: Response) {
   const id = Number(req.params.id);
-  //const { userId } = res.locals;
-  const userId = 4;
+  const { id: userId } = res.locals.user;
 
   try {
     await credentialService.getCredentialById(userId, id);
     await credentialService.deleteCredential(id);
-    res.status(200).send("Credential deleted");
+    res.status(httpStatus.OK).send("Credential deleted");
   } catch (error) {
     if (error.name === "NotFoundError") {
       return res.status(httpStatus.NOT_FOUND).send(error);
