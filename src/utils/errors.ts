@@ -33,7 +33,7 @@ export function notFoundError(): ApplicationError {
 export function unauthorizedAccess(): ApplicationError {
   return {
     name: "UnauthorizedAccess",
-    message: "You only have access to your credentials",
+    message: "You don't have access to this register",
   };
 }
 

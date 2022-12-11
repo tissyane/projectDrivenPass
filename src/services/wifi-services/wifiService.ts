@@ -1,7 +1,7 @@
 import { WifiData } from "@/protocols/protocols";
 import * as encryptUtils from "../../utils/encrypt";
 import * as wifiRepository from "../../repositories/wifiRepository";
-import { notFoundError } from "../../utils/errors";
+import { notFoundError, unauthorizedAccess } from "../../utils/errors";
 
 async function createWifi(userId: number, wifiData: WifiData) {
   const encryptedPassword = encryptUtils.encryptData(wifiData.password);
@@ -25,10 +25,26 @@ async function getAllWifi(userId: number) {
   });
   return wifiWithDecryptedPassword;
 }
+
+async function getwifiById(userId: number, id: number) {
+  
+  const wifi = await wifiRepository.getById(id);
+  
+  if (!wifi) {
+    throw notFoundError();
+  }
+  if (wifi.userId !== userId) {
+    throw unauthorizedAccess();
+  }
+  const { password } = wifi;
+const decryptedPassword =  encryptUtils.decryptData(password);
+return { ...wifi, password: decryptedPassword };
+}
   
 const wifiService = {
   createWifi,
-  getAllWifi
+  getAllWifi,
+  getwifiById
 };
 
 export default wifiService;

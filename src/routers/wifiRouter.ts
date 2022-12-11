@@ -17,4 +17,10 @@ wifiRouter.get(
   '/network',
   wifiController.getAllWifi
 );
+
+wifiRouter.get(
+  '/network/:id',
+  wifiController.getWifiById
+);
+
 export default wifiRouter;

@@ -18,3 +18,7 @@ export async function createNetwork(
   export async function getAll (userId: number)  {
     return prisma.network.findMany({ where: { userId } });
   };
+
+  export async function getById(id: number) {
+    return prisma.network.findUnique({ where: { id } });
+  };

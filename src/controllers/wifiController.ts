@@ -35,4 +35,22 @@ export async function getAllWifi(req: Request, res: Response) {
   }
 }
 
+export async function getWifiById(req: Request, res: Response) {
+  const id = Number(req.params.id);
+   const { id: userId } = res.locals.user;
+
+  try {
+    const wifi = await wifiService.getwifiById(userId, id);
+    res.status(httpStatus.OK).send(wifi);
+  } catch (error) {
+    if (error.name === "NotFoundError") {
+      return res.status(httpStatus.NOT_FOUND).send(error);
+    }
+    if (error.name === "UnauthorizedAccess") {
+      return res.status(httpStatus.UNAUTHORIZED).send(error);
+    }
+    return res.status(httpStatus.BAD_REQUEST).send(error);
+  }
+}
+
 
