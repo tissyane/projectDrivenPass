@@ -5,8 +5,7 @@ import signUpService from "../services/user-services/signUpService";
 import signInService from "../services/user-services/signInService";
 
 export async function signUp(req: Request, res: Response) {
- 
-  const body  = req.body;
+   const body  = req.body;
 
   try {
     const user = await signUpService.createUser(body);
@@ -28,7 +27,6 @@ export async function signIn(req: Request, res: Response) {
 
   try {
     const result = await signInService.signIn(body);
-
     return res.status(httpStatus.OK).send(result);
   } catch (error) {
     return res.sendStatus(httpStatus.UNAUTHORIZED);

@@ -3,7 +3,7 @@ import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import userRepository from "../../repositories/userRepository";
-import { invalidCredentialsError } from "./errors";
+import { invalidCredentialsError } from "../../utils/errors";
 
 type SignInResult = {
     token: string;

@@ -1,6 +1,6 @@
 import { CredentialData } from "@/protocols/protocols";
 import * as encryptUtils from "../../utils/encrypt";
-import { conflictError, notFoundError } from "../user-services/errors";
+import { duplicatedTitleError, notFoundError } from "../../utils/errors";
 import * as credentialRepository from '../../repositories/credentialRepository';
 
 export async function createCredential(
@@ -22,9 +22,27 @@ return credential
       title
     );
     if (titleExists) {
-      throw conflictError();
+      throw duplicatedTitleError();
     }
   }
+
+  export const getAllCredentials = async (userId: number) => {
+    const credentials = await credentialRepository.getAll(userId);
+    if (credentials.length === 0) {
+      throw notFoundError();
+    }
+    const credentialsWithDecryptedPassword = credentials.map((credential) => {
+      const { password } = credential;
+            const decryptedPassword = encryptUtils.decryptData(password);
+      return { ...credential, password: decryptedPassword };
+    });
+    return credentialsWithDecryptedPassword;
+  };
   
 
+  const credentialService = {
+    createCredential, 
+    getAllCredentials
+  };
   
+  export default credentialService;

@@ -1,5 +1,5 @@
 
-import { ApplicationError } from "../../protocols/protocols";
+import { ApplicationError } from "../protocols/protocols";
 
 export function duplicatedEmailError(): ApplicationError {
   return {
@@ -16,10 +16,10 @@ export function invalidCredentialsError(): ApplicationError {
   };
 }
 
-export function conflictError(): ApplicationError {
+export function duplicatedTitleError(): ApplicationError {
   return {
-    name: "ConflictError",
-    message: "data already registered",
+    name: "DuplicatedTitleError",
+    message: "Your title must be unique for each credential",
   };
 }
 

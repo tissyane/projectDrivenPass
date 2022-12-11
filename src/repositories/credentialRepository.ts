@@ -23,4 +23,7 @@ export async function createCredential(
     });
   }
   
+  export const getAll = async (userId: number) => {
+    return prisma.credential.findMany({ where: { userId } });
+  };
  

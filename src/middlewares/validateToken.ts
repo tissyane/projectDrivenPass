@@ -1,5 +1,5 @@
 import userRepository from "../repositories/userRepository";
-import { invalidCredentialsError } from "../services/user-services/errors";
+import { invalidCredentialsError } from "../utils/errors";
 import { User } from "@prisma/client";
 import dotenv from "dotenv";
 import { NextFunction, Request, Response } from "express";
