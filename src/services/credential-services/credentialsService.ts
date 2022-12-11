@@ -56,11 +56,15 @@ async function getCredentialById(userId: number, id: number) {
 	return { ...credential, password: decryptedPassword };
   }
 
+  export async function deleteCredential(id: number) {
+    await credentialRepository.deleteCredential(id);
+  }
+
   const credentialService = {
     createCredential, 
     getAllCredentials,
-    getCredentialById
-
+    getCredentialById,
+    deleteCredential
   };
   
   export default credentialService;

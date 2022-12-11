@@ -12,7 +12,7 @@ export async function createCredential(
     return prisma.credential.create({
       data: credentialInfo
     });
-  }
+  };
   
   export async function getTitleByUserId (userId: number, title: string) {
     return prisma.credential.findFirst({
@@ -21,23 +21,16 @@ export async function createCredential(
         title
       }
     });
-  }
+  };
 
-
-  
   export async function getAll (userId: number)  {
     return prisma.credential.findMany({ where: { userId } });
   };
- 
-  export async function getCredentialById(userId: number, id: number) {
-    return prisma.credential.findFirst({
-      where: {
-        userId,
-        id
-      }
-    });
-  }
 
   export async function getById(id: number) {
     return prisma.credential.findUnique({ where: { id } });
-  }
+  };
+
+  export async function deleteCredential(id: number) {
+    return prisma.credential.delete({ where: { id } });
+  };
