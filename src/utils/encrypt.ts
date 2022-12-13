@@ -1,4 +1,3 @@
-
 import Cryptr from 'cryptr';
 
 function cryptrConfig(): Cryptr {

@@ -1,5 +1,5 @@
 import { WifiData } from "@/protocols/protocols";
-import wifiService from "../services/wifi-services/wifiService";
+import wifiService from "../services/wifiService";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 
@@ -15,9 +15,8 @@ export async function createWifi(req: Request, res: Response) {
     res
       .status(httpStatus.CREATED)
       .send(network);
-  } catch (error) {
-    
-    return res.status(httpStatus.BAD_REQUEST).send(error);
+  } catch (error) {    
+    return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 }
 
@@ -31,7 +30,6 @@ export async function getAllWifi(req: Request, res: Response) {
     if (error.name === "NotFoundError") {
       return res.status(httpStatus.NOT_FOUND).send(error);
     }
-    return res.status(httpStatus.BAD_REQUEST).send(error);
   }
 }
 
@@ -49,7 +47,6 @@ export async function getWifiById(req: Request, res: Response) {
     if (error.name === "UnauthorizedAccess") {
       return res.status(httpStatus.UNAUTHORIZED).send(error);
     }
-    return res.status(httpStatus.BAD_REQUEST).send(error);
   }
 }
 
@@ -68,6 +65,5 @@ export async function deleteWifi(req: Request, res: Response) {
     if (error.name === "UnauthorizedAccess") {
       return res.status(httpStatus.UNAUTHORIZED).send(error);
     }
-    return res.status(httpStatus.BAD_REQUEST).send(error);
   }
 }

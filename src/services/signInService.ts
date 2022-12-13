@@ -2,8 +2,8 @@ import { AuthData } from "@/protocols/protocols";
 import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import userRepository from "../../repositories/userRepository";
-import { invalidCredentialsError } from "../../utils/errors";
+import userRepository from "../repositories/userRepository";
+import { invalidCredentialsError } from "../utils/errors";
 
 type SignInResult = {
     token: string;

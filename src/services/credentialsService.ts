@@ -1,22 +1,28 @@
 import { CredentialData } from "@/protocols/protocols";
-import * as encryptUtils from "../../utils/encrypt";
-import { duplicatedTitleError, notFoundError, unauthorizedAccess } from "../../utils/errors";
-import * as credentialRepository from '../../repositories/credentialRepository';
+import * as encryptUtils from "../utils/encrypt";
+import { duplicatedTitleError, notFoundError, unauthorizedAccess } from "../utils/errors";
+import * as credentialRepository from '../repositories/credentialRepository';
+import { CredentialToBody } from "@/schemas/credentialSchema";
 
 async function createCredential(
     userId: number,
-    credentialData: CredentialData
+    credentialData: CredentialToBody
   ) {
     await validateTitle(userId, credentialData.title);
     const encryptedPassword = encryptUtils.encryptData(credentialData.password);
-    const credential = await credentialRepository.createCredential(userId, {
-      ...credentialData,
+    const credentialInfo = {
+      userId: userId,
+      ...credentialData
+    }
+    const credential = await credentialRepository.createCredential({
+      ...credentialInfo,
       password: encryptedPassword
     });
+
 return credential
   }
 
-async function validateTitle(userId: number, title: string) {
+async function validateTitle(userId: number, title: string): Promise<void> {
     const titleExists = await credentialRepository.getTitleByUserId(
       userId,
       title
@@ -28,10 +34,16 @@ async function validateTitle(userId: number, title: string) {
 
 
 async function getAllCredentials (userId: number) {
+
+  
     const credentials = await credentialRepository.getAll(userId);
+
+
     if (credentials.length === 0) {
       throw notFoundError();
     }
+
+
     const credentialsWithDecryptedPassword = credentials.map((credential) => {
       const { password } = credential;
       const decryptedPassword = encryptUtils.decryptData(password);

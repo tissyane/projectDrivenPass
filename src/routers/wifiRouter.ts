@@ -1,15 +1,15 @@
 import { Router } from 'express';
-import validateSchema from '../middlewares/validateSchema';
 import { validateToken } from '../middlewares/validateToken';
 import * as wifiController from '../controllers/wifiController';
 import { wifiSchema } from '../schemas/wifiSchema';
+import { validateBody } from '../middlewares/validation-middleware';
 
 const wifiRouter = Router();
 
 wifiRouter.use(validateToken);
 wifiRouter.post(
   '/network',
-  validateSchema(wifiSchema),
+  validateBody(wifiSchema),
   wifiController.createWifi
 );
 

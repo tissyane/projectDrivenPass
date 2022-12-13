@@ -1,6 +1,7 @@
+import { Credential } from '@prisma/client';
 import joi from 'joi';
 
-export const credentialSchema = joi.object({
+export const credentialSchema = joi.object<CredentialToBody>({
     title: joi.string().required(),
     url: joi
     .string()
@@ -12,3 +13,5 @@ export const credentialSchema = joi.object({
     username: joi.string().required(),
     password: joi.string().required()
   });
+
+export type CredentialToBody = Omit<Credential, 'id' | 'userId'>;

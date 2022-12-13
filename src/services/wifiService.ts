@@ -1,7 +1,7 @@
 import { WifiData } from "@/protocols/protocols";
-import * as encryptUtils from "../../utils/encrypt";
-import * as wifiRepository from "../../repositories/wifiRepository";
-import { notFoundError, unauthorizedAccess } from "../../utils/errors";
+import * as encryptUtils from "../utils/encrypt";
+import * as wifiRepository from "../repositories/wifiRepository";
+import { notFoundError, unauthorizedAccess } from "../utils/errors";
 
 async function createWifi(userId: number, wifiData: WifiData) {
   const encryptedPassword = encryptUtils.encryptData(wifiData.password);

@@ -1,16 +1,10 @@
 import { CredentialData } from "@/protocols/protocols";
 import { prisma } from "../config/database";
 
-export async function createCredential(
-    userId: number,
-    credentialData: CredentialData
-  ) {
-    const credentialInfo = {
-      userId,
-      ...credentialData
-    };
+export async function createCredential(credential: CredentialData){
+    
     return prisma.credential.create({
-      data: credentialInfo
+      data: credential
     });
   };
   

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { AuthData } from "@/protocols/protocols";
 import httpStatus from "http-status";
-import signUpService from "../services/user-services/signUpService";
-import signInService from "../services/user-services/signInService";
+import signUpService from "../services/signUpService";
+import signInService from "../services/signInService";
 
 export async function signUp(req: Request, res: Response) {
    const body  = req.body;
@@ -15,10 +15,7 @@ export async function signUp(req: Request, res: Response) {
       email: user.email,
     });
   } catch (error) {
-    if (error.name === "DuplicatedEmailError") {
       return res.status(httpStatus.CONFLICT).send(error);
-    }
-    return res.status(httpStatus.BAD_REQUEST).send(error);
   }
 }
 
