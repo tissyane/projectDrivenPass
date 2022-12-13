@@ -15,7 +15,9 @@ beforeAll(async () => {
 });
 
 describe("POST /signup", () => {
+
   describe("Invalid body", () => {
+    
     it("should respond with status 400 when body is not given", async () => {
       const response = await api.post("/signup");
 

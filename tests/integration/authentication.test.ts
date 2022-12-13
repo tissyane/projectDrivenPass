@@ -3,7 +3,7 @@ import supertest from "supertest";
 import app, { init } from "../../src/app";
 import { faker } from "@faker-js/faker";
 import { createUser } from "../factories/user-factory";
-import { cleanDb } from "../helpers";
+import { cleanDb, generateValidToken } from "../helpers";
 
 const api = supertest(app);
 
@@ -34,43 +34,37 @@ describe("POST /signin", () => {
       password: faker.internet.password(10),
     });
 
-    it("should respond with status 401 if there is no user for given email", async () => {
-      const body = generateValidBody();
+    describe("Invalid credentials", () => {
+      it("should respond with status 401 if there is no user for given email", async () => {
+        const body = generateValidBody();
 
-      const response = await api.post("/signin").send(body);
+        const response = await api.post("/signin").send(body);
 
-      expect(response.status).toBe(httpStatus.UNAUTHORIZED);
-    });
-
-    it("should respond with status 401 if there is a user for given email but password is not correct", async () => {
-      const body = generateValidBody();
-      await createUser(body);
-
-      const response = await api.post("/signin").send({
-        ...body,
-        password: faker.lorem.word(),
+        expect(response.status).toBe(httpStatus.UNAUTHORIZED);
       });
 
-      expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+      it("should respond with status 401 if there is a user for given email but password is not correct", async () => {
+        const body = generateValidBody();
+        await createUser(body);
+
+        const response = await api.post("/signin").send({
+          ...body,
+          password: faker.lorem.word(),
+        });
+
+        expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+      });
     });
 
     describe("Valid credentials", () => {
-      it("should respond with status 200", async () => {
+      it("should respond with status 200 and token for successful login ", async () => {
         const body = generateValidBody();
-        await createUser(body);
-
+        const user = await createUser(body);
+        const token = await generateValidToken(user)
         const response = await api.post("/signin").send(body);
 
         expect(response.status).toBe(httpStatus.OK);
-      });
-
-      it("should respond with session token", async () => {
-        const body = generateValidBody();
-        await createUser(body);
-
-        const response = await api.post("/signin").send(body);
-
-        expect(response.body.token).toBeDefined();
+        expect(response.body).toEqual({token});
       });
     });
   });

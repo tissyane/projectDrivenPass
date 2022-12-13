@@ -18,6 +18,7 @@ export async function createCredential(req: Request, res: Response) {
     if (error.name === "DuplicatedTitleError") {
       return res.status(httpStatus.CONFLICT).send(error);
     }
+    return res.status(httpStatus.BAD_REQUEST).send(error);
   }
 }
 
@@ -32,6 +33,7 @@ export async function getAllCredentials(req: Request, res: Response) {
     if (error.name === "NotFoundError") {
       return res.status(httpStatus.NOT_FOUND).send(error);
     }
+    return res.status(httpStatus.BAD_REQUEST).send(error);
   }
 }
 
@@ -49,6 +51,7 @@ export async function getCredentialById(req: Request, res: Response) {
     if (error.name === "UnauthorizedAccess") {
       return res.status(httpStatus.UNAUTHORIZED).send(error);
     }
+    return res.status(httpStatus.BAD_REQUEST).send(error);
   }
 }
 
@@ -67,5 +70,6 @@ export async function deleteCredential(req: Request, res: Response) {
     if (error.name === "UnauthorizedAccess") {
       return res.status(httpStatus.UNAUTHORIZED).send(error);
     }
+    return res.status(httpStatus.BAD_REQUEST).send(error);
   }
 }

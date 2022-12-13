@@ -29,7 +29,7 @@ describe("POST /network", () => {
     it("should respond with status 401 if given token is not valid", async () => {
       const token = faker.lorem.word();
 
-      const response = await api.post("/wifi").set("Authorization", `Bearer ${token}`);
+      const response = await api.post("/network").set("Authorization", `Bearer ${token}`);
 
       expect(response.status).toBe(httpStatus.UNAUTHORIZED);
     });
@@ -54,7 +54,7 @@ describe("POST /network", () => {
   })
 
   describe("Valid token and body", () =>{
-    it("should response with 201 and save credential to db", async () => {
+    it("should respond with 201 and save credential to db", async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const wifi = await createWifitoBody();
@@ -183,31 +183,58 @@ describe("GET /network/:id", () => {
 })
 
 describe("DELETE /network/:id", () => {
-  
-  it ("should respond with status 200 and delete wifi from db", async () => { 
-    const user = await createUser();
-    const token = await generateValidToken(user);
-    const wifi = await createWifi(user);
 
-    const response = await api.delete(`/network/${wifi.id}`).set("Authorization", `Bearer ${token}`);
-    expect(response.status).toBe(httpStatus.OK);
+  describe("No/invalid token", () => {
+
+    it("should respond with status 401 if no token is given", async () => {
+      const response = await api.get("/network");
+
+      expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+    });
+
+    it("should respond with status 401 if given token is not valid", async () => {
+      const token = faker.lorem.word();
+
+      const response = await api.get("/network").set("Authorization", `Bearer ${token}`);
+
+      expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+    });
+
+  
   })
 
-  it("should respond with status 404 for invalid network id", async () => {
-    const token = await generateValidToken();
+  describe("Ivalid userId or networkId", () => {
+    it("should respond with status 404 for invalid network id", async () => {
+      const token = await generateValidToken();
+  
+      const response = await api.delete("/network/100").set("Authorization", `Bearer ${token}`);
+  
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
+  
+    it("should respond with status 401 for unauthorized access", async () => {
+      
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const wifi = await createWifi();
+      const response = await api.delete(`/network/${wifi.id}`).set("Authorization", `Bearer ${token}`);
+  
+      expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+    });
+  })
 
-    const response = await api.delete("/network/100").set("Authorization", `Bearer ${token}`);
+  describe("Valid credentials", () => {
+    it ("should respond with status 200 and delete wifi from db", async () => { 
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const wifi = await createWifi(user);
+  
+      const response = await api.delete(`/network/${wifi.id}`).set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.OK);
+    })
+  })
+  
+  
 
-    expect(response.status).toBe(httpStatus.NOT_FOUND);
-  });
-
-  it("should respond with status 401 for unauthorized access", async () => {
-    
-    const user = await createUser();
-    const token = await generateValidToken(user);
-    const wifi = await createWifi();
-    const response = await api.delete(`/network/${wifi.id}`).set("Authorization", `Bearer ${token}`);
-
-    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
-  });
+  
 })
